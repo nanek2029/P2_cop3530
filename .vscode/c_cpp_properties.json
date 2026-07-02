@@ -4,8 +4,7 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "C:/Users/nanek/Downloads/P2_cop3530/src",
-                "C:/Users/nanek/Downloads/P2_cop3530/src/bridges"
+                "C:/Users/nanek/Downloads/P2_cop3530/src"
             ],
             "defines": [
                 "_DEBUG",
