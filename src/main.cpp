@@ -5,7 +5,6 @@
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
-#include <string_view>
 
 using namespace std;
 
@@ -26,7 +25,7 @@ int getId(const string &s, unordered_map<string, int> &idToNum, vector<string> &
 }
 
 // helper function to get the next field from a line of tsv data
-static inline string_view getField(const string &line, int &pos) {
+static inline string getField(const string &line, int &pos) {
 
     int next = line.find('\t', pos);
 
@@ -34,11 +33,11 @@ static inline string_view getField(const string &line, int &pos) {
         next = line.size();
     }
 
-    string_view out(line.data() + pos, next - pos);
+    string out = line.substr(pos, next - pos);
     pos = next + 1;
 
     if (out == "\\N") {
-        return string_view();
+        return string();
     }
 
     return out;
@@ -52,6 +51,8 @@ int main() {
     // and the third has the actor ids and their movie ids
 
     const int maxNodes = 120000;
+
+    cout << "a" << endl;
 
     unordered_map<string, int> idToNum;
     vector<string> numToId;
@@ -76,6 +77,8 @@ int main() {
         cout << "relations file did not open "<< endl;
     }
 
+      cout << "a" << endl;
+
 
     // movie titles stored in map [id] = title
     string line;
@@ -85,9 +88,9 @@ int main() {
         int pos = 0;
 
         // the fields of the tsv line that are relevant are id, type, title 
-        string_view id = getField(line, pos);
-        string_view type = getField(line, pos);
-        string_view title = getField(line, pos);
+        string id = getField(line, pos);
+        string type = getField(line, pos);
+        string title = getField(line, pos);
 
         // only store movies, not tv shows or other types
         if (type == "movie" && !id.empty() && !title.empty()) {
@@ -96,19 +99,23 @@ int main() {
     }
     movies.close();
 
+
+      cout << "a" << endl;
     // actor names stored in map [id] = name
     getline(names, line);
     while (getline(names, line)){
 
         int pos = 0;
-        string_view id = getField(line, pos);
-        string_view name = getField(line, pos);
+        string id = getField(line, pos);
+        string name = getField(line, pos);
 
         if (!id.empty() && !name.empty()) {
             actorNames[string(id)] = string(name);
         }
     }
     names.close();
+
+      cout << "a" << endl;
 
     // build graph, actor - movie connections 
     getline(relations, line);
@@ -118,10 +125,10 @@ int main() {
             break;
         }
         int pos = 0;
-        string_view movieId = getField(line, pos);
+        string movieId = getField(line, pos);
         getField(line, pos);
-        string_view actorId = getField(line, pos);
-        string_view category = getField(line, pos);
+        string actorId = getField(line, pos);
+        string category = getField(line, pos);
 
         // only consider actors and actresses, skip directors, writers
         if (category != "actor" && category != "actress") continue;
@@ -144,6 +151,8 @@ int main() {
     cout << "Actors: " << actorNames.size() << endl;
     cout << "Movies: " << movieTitles.size() << endl;
     cout << "Nodes in graph: " << graph.size() << endl;
+
+      cout << "a" << endl;
 
     for (int i = 0; i < 5; ++i) {
 
