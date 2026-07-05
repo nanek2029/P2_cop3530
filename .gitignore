@@ -1,0 +1,7 @@
+src/*.tsv
+*.tsv
+*.csv
+*.zip
+*.exe
+*.obj
+*.pdb
