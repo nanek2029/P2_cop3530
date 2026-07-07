@@ -1,53 +1,51 @@
 #include "SearchAlgorithms.h"
 #include <algorithm>
-#include <unordered_set>
+#include <queue>
 #include <chrono>
 
 SearchResult BFS(
-    const std::unordered_map<std::string, std::vector<std::string>>& graph,
-    const std::string& start,
-    const std::string& target) {
+    const std::vector<std::vector<int>>& graph,
+    int start,
+    int target) {
 
     SearchResult result;
     auto timeStart = std::chrono::high_resolution_clock::now();
-    if (graph.find(start) == graph.end() || graph.find(target) == graph.end()) {  // return an empty result is either actor/movie does not exist
+    // Make sure start and target nodes exist in graph
+    if (start < 0 || target < 0 || start >= graph.size() || target >= graph.size()) {
         auto timeEnd = std::chrono::high_resolution_clock::now();
         result.duration = std::chrono::duration<double, std::milli>(timeEnd - timeStart).count();
         return result;
     }
 
-    std::vector<std::string> q;  //vector acts as queue for BFS
-    int indexFront = 0;
-    std::unordered_set<std::string> visited;  // keeps track of nodes that were already visited
-    std::unordered_map<std::string, std::string> parent;  // stores each node's parent so we can reconstruct shortest path
-    q.push_back(start);
-    visited.insert(start);
+    std::vector<bool> visited(graph.size(), false);
+    std::vector<int> parent(graph.size(), -1);
+    std::queue<int> q;  //vector acts as queue for BFS
+    q.push(start);
+    visited[start] = true;
 
-    while (indexFront < q.size()) {   // continue searching until there are no nodes left to search
-        std::string curr = q[indexFront];
-        indexFront++;
-
+    while (!q.empty()) {   // continue searching until there are no nodes left to search
+        int curr = q.front();
+        q.pop();
         result.nodesVisited++;
 
         if (curr == target) {   // if destination reached, rebuild shortest path
-            std::string node = target;
+            int node = target;
 
-            while (node != start) {   // walk backwards through parent map
+            while (node != -1) {   // walk backwards through parent map
                 result.path.push_back(node);
                 node = parent[node];
             }
-            result.path.push_back(start);
-            std::reverse(result.path.begin(), result.path.end());  // reverse to make path be going forward
+            std::reverse(result.path.begin(), result.path.end());  // reverse to make path start at original actor and end at target actor
             auto timeEnd = std::chrono::high_resolution_clock::now();
             result.duration = std::chrono::duration<double, std::milli>(timeEnd - timeStart).count();
             return result;
         }
 
-        for (const std::string& next : graph.at(curr)) {   // visit every neighboring node
-            if (visited.find(next) == visited.end()) {
-                visited.insert(next);
-                parent[next] = curr;
-                q.push_back(next);
+        for (int next : graph[curr]) {   // visit every neighboring node
+            if (!visited[next]) {
+                visited[next] = true;
+                parent[next] = curr;  // stores this node
+                q.push(next);
             }
         }
     }
@@ -57,14 +55,14 @@ SearchResult BFS(
 }
 
 SearchResult bidirectBFS(
-    const std::unordered_map<std::string, std::vector<std::string> > &graph,
-    const std::string &start,
-    const std::string &target) {
+    const std::vector<std::vector<int>> &graph,
+    int start,
+    int target) {
 
     SearchResult result;
     auto timeStart = std::chrono::high_resolution_clock::now();
 
-    if (graph.find(start) == graph.end() || graph.find(target) == graph.end()) {
+    if (start < 0 || target < 0 || start >= graph.size() || target >= graph.size()) {
         auto timeEnd = std::chrono::high_resolution_clock::now();
         result.duration = std::chrono::duration<double, std::milli>(timeEnd - timeStart).count();
         return result;
@@ -78,90 +76,86 @@ SearchResult bidirectBFS(
         return result;
     }
 
-    std::vector<std::string> qStart;
-    std::vector<std::string> qTarget;
+    std::queue<int> qStart;
+    std::queue<int> qTarget;
 
-    int frontStart = 0;
-    int frontTarget = 0;
+    std::vector<bool> visitedStart(graph.size(), false);   //visited from the start
+    std::vector<bool> visitedTarget(graph.size(), false);  //visited from the target
+    std::vector<int> parentStart(graph.size(), -1);
+    std::vector<int> parentTarget(graph.size(), -1);
 
-    std::unordered_set<std::string> visitedStart;   //visited from the start
-    std::unordered_set<std::string> visitedTarget;  //visited from the target
-    std::unordered_map<std::string, std::string> parentStart;
-    std::unordered_map<std::string, std::string> parentTarget;
+    qStart.push(start);
+    qTarget.push(target);
+    visitedStart[start] = true;
+    visitedTarget[target] = true;
 
-    qStart.push_back(start);
-    qTarget.push_back(target);
-    visitedStart.insert(start);
-    visitedTarget.insert(target);
+    int nodeMeet = -1;
 
-    std::string nodeMeet = "";
-
-    while (frontStart < qStart.size() && frontTarget < qTarget.size()) {  // continue until one search runs out of nodes
-        std::string currStart = qStart[frontStart];   // expand one level from the starting actor
-        frontStart++;
+    while (!qStart.empty() && !qTarget.empty()) {  // continue until one search runs out of nodes
+        int currStart = qStart.front();
+        qStart.pop();
         result.nodesVisited++;
 
-        for (const std::string& next : graph.at(currStart)) {
-            if (visitedStart.find(next) == visitedStart.end()) {
-                visitedStart.insert(next);
+        for (int next : graph[currStart]) {
+            if (!visitedStart[next]) {
+                visitedStart[next] = true;
                 parentStart[next] = currStart;
-                qStart.push_back(next);
+                qStart.push(next);
 
-                if (visitedTarget.find(next) != visitedTarget.end()) {
+                if (visitedTarget[next]) {
                     nodeMeet = next;  // stop when both searches meet
                     break;
                 }
             }
         }
-        if (!nodeMeet.empty()) {
+        if (nodeMeet != -1) {
             break;
         }
 
-        std::string currTarget = qTarget[frontTarget];  // Expand one level from target actor
-        frontTarget++;
+        int currTarget = qTarget.front();  // Expand one level from target actor
+        qTarget.pop();
         result.nodesVisited++;
 
-        for (const std::string& next : graph.at(currTarget)) {
-            if (visitedTarget.find(next) == visitedTarget.end()) {
-                visitedTarget.insert(next);
+        for (int next : graph[currTarget]) {
+            if (!visitedTarget[next]) {
+                visitedTarget[next] = true;
                 parentTarget[next] = currTarget;
-                qTarget.push_back(next);
+                qTarget.push(next);
 
-                if (visitedStart.find(next) != visitedStart.end()) {
+                if (visitedStart[next]) {
                     nodeMeet = next;
                     break;
                 }
             }
         }
-        if (!nodeMeet.empty()) {
+        if (nodeMeet != -1) {
             break;
         }
     }
-    if (nodeMeet.empty()) {   // no connection exists between the two actors
+    if (nodeMeet == -1) {   // no connection exists between the two actors
         auto timeEnd = std::chrono::high_resolution_clock::now();
         result.duration = std::chrono::duration<double, std::milli>(timeEnd - timeStart).count();
         return result;
     }
 
-    std::vector<std::string> pathLeft;
-    std::string node = nodeMeet;
+    std::vector<int> pathLeft;
+    int node = nodeMeet;
 
-    while (node != start) {
+    while (node != -1) {
         pathLeft.push_back(node);
         node = parentStart[node];
     }
-    pathLeft.push_back(start);
     std::reverse(pathLeft.begin(), pathLeft.end());
-    std::vector<std::string> pathRight;
+    std::vector<int> pathRight;
     node = nodeMeet;
 
-    while (node != target) {
+    while (parentTarget[node] != -1) {
         node = parentTarget[node];
         pathRight.push_back(node);
     }
     result.path = pathLeft;   // combine both paths
 
-    for (const std::string& item : pathRight) {
+    for (int item : pathRight) {
         result.path.push_back(item);
     }
 

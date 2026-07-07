@@ -6,24 +6,19 @@
 #include <unordered_map>
 
 struct SearchResult {
-    std::vector<std::string> path;
-    int nodesVisited;
-    double duration;
-
-    SearchResult() {
-        nodesVisited = 0;
-        duration = 0.0;
-    }
+    std::vector<int> path;
+    int nodesVisited = 0;
+    double duration = 0.0;
 };
 
 SearchResult BFS(
-    const std::unordered_map<std::string, std::vector<std::string>>& graph,
-    const std::string& start,
-    const std::string& target);
+    const std::vector<std::vector<int>>& graph,
+    int start,
+    int target);
 
 SearchResult bidirectBFS(
-    const std::unordered_map<std::string, std::vector<std::string>>& graph,
-    const std::string& start,
-    const std::string& target);
+    const std::vector<std::vector<int>>& graph,
+    int start,
+    int target);
 
 #endif //P2_COP3530_SEARCHALGORITHMS_H
