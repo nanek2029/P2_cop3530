@@ -171,101 +171,65 @@ int main() {
     cout << "Movies: " << movieTitles.size() << endl;
     cout << "Nodes in graph: " << graph.size() << endl;
 
-    // for (int i = 0; i < 5; ++i) {
-    //
-    //     // checkign if actor or movie id
-    //     if (actorNames.find(numToId[i]) != actorNames.end()) {
-    //
-    //         cout << actorNames[numToId[i]] << " has " << graph[i].size() << " edges." << endl;
-    //
-    //         // printing edges, should all be movies
-    //         for (int j = 0; j < graph[i].size(); ++j) {
-    //
-    //             int neighborId = graph[i][j];
-    //             string neighborStringId = numToId[neighborId];
-    //
-    //             if (movieTitles.find(neighborStringId) != movieTitles.end()) {
-    //
-    //                 string title = movieTitles[neighborStringId];
-    //                 if (!title.empty()) {
-    //                     cout << " -> " << title << endl;
-    //                 }
-    //             }
-    //         }
-    //     } else {
-    //         // otherwise its a movie id
-    //         cout << movieTitles[numToId[i]] << " has " << graph[i].size() << " edges." << endl;
-    //
-    //         for (int j = 0; j < graph[i].size(); ++j) {
-    //
-    //             int neighborId = graph[i][j];
-    //             string neighborStringId = numToId[neighborId];
-    //
-    //             if (actorNames.find(neighborStringId) != actorNames.end()) {
-    //
-    //                 string name = actorNames[neighborStringId];
-    //                 if (!name.empty()) {
-    //                     cout << " -> " << name << endl;
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
+    while (true) {
 
-    string startActor;
-    string targetActor;
+        string startActor;
+        cout << "\nEnter the starting actor's name: ";
+        getline(cin, startActor);
+        string startIMDb = nameToActorID[startActor][0];
 
-    cout << "\nEnter the starting actor's name: ";
-    getline(cin, startActor);
-    cout << "Enter the target actor's name: ";
-    getline(cin, targetActor);
+        while (idToNum.find(startIMDb) == idToNum.end()) {
+            cout << "\nActor not in graph. Try again: ";
+            getline(cin, startActor);
+            startIMDb = nameToActorID[startActor][0];
+        }
 
+        string targetActor;
+        cout << "Enter the target actor's name: ";
+        getline(cin, targetActor);
+        string targetIMDb = nameToActorID[targetActor][0];
 
-    if (nameToActorID.find(startActor) == nameToActorID.end()) {
-        cout << "Starting actor not found." << endl;
-        return 0;
-    }
+        while (idToNum.find(targetIMDb) == idToNum.end()) {
+            cout << "\nActor not in graph. Try again: ";
+            getline(cin, targetActor);
+            targetIMDb = nameToActorID[targetActor][0];
+        }
 
-    if (nameToActorID.find(targetActor) == nameToActorID.end()) {
-        cout << "Target actor not found." << endl;
-        return 0;
-    }
+        int startID = idToNum[startIMDb];
+        int targetID = idToNum[targetIMDb];
 
-    // convert names to IMDb IDs to graph IDs
-    string startIMDb = nameToActorID[startActor][0];
-    string targetIMDb = nameToActorID[targetActor][0];
+        //Run BFS logic and print results
+        SearchResult bfsResult = BFS(graph, startID, targetID);
+        SearchResult BidirectResult = bidirectBFS(graph, startID, targetID);
 
-    if (idToNum.find(startIMDb) == idToNum.end() || idToNum.find(targetIMDb) == idToNum.end()) {
-        cout << "Actor does not exist in the graph." << endl;
-        return 0;
-    }
+        cout << "\n========== BFS Result ==========" << endl;
+        if (bfsResult.path.empty()) {
+            cout << "\nNo connection found." << endl;
+        } else {
+            cout << "\nConnection found!" << endl;
+            cout << "Nodes visited: " << bfsResult.nodesVisited << endl;
+            cout << "Duration: " << bfsResult.duration << " ms" << endl;
+            cout << "Shortest Path: " << bfsResult.path.size() << endl;
+            printPath(bfsResult, numToId, actorNames, movieTitles);
+        }
 
-    int startID = idToNum[startIMDb];
-    int targetID = idToNum[targetIMDb];
+        cout << "\n===== Bidirectional BFS Result =====" << endl;
+        if (BidirectResult.path.empty()) {
+            cout << "\nNo connection found." << endl;
+        } else {
+            cout << "\nConnection found!" << endl;
+            cout << "Nodes visited: " << BidirectResult.nodesVisited << endl;
+            cout << "Duration: " << BidirectResult.duration << " ms" << endl;
+            cout << "Shortest Path: " << BidirectResult.path.size() << endl;
+            printPath(BidirectResult, numToId, actorNames, movieTitles);
+        }
 
-    //Run BFS logic and print results
-    SearchResult bfsResult = BFS(graph, startID, targetID);
-    SearchResult BidirectResult = bidirectBFS(graph, startID, targetID);
-
-    cout << "\n========== BFS Result ==========" << endl;
-    if (bfsResult.path.empty()) {
-        cout << "\nNo connection found." << endl;
-    } else {
-        cout << "\nConnection found!" << endl;
-        cout << "Nodes visited: " << bfsResult.nodesVisited << endl;
-        cout << "Duration: " << bfsResult.duration << " ms" << endl;
-        cout << "Shortest Path: " << bfsResult.path.size() << endl;
-        printPath(bfsResult, numToId, actorNames, movieTitles);
-    }
-
-    cout << "\n===== Bidirectional BFS Result =====" << endl;
-    if (bfsResult.path.empty()) {
-        cout << "\nNo connection found." << endl;
-    } else {
-        cout << "\nConnection found!" << endl;
-        cout << "Nodes visited: " << BidirectResult.nodesVisited << endl;
-        cout << "Duration: " << BidirectResult.duration << " ms" << endl;
-        cout << "Shortest Path: " << BidirectResult.path.size() << endl;
-        printPath(BidirectResult, numToId, actorNames, movieTitles);
+        cout << "\nEnter -1 to stop. Enter any other key to try another pair." << endl;
+        string choice;
+        getline(cin, choice);
+        if (choice == "-1") {
+            cout << "Exiting program." << endl;
+            break;
+        }
     }
 }

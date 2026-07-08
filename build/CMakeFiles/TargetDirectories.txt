@@ -1,0 +1,3 @@
+C:/Users/nanek/Downloads/P2_cop3530/build/CMakeFiles/P2_cop3530.dir
+C:/Users/nanek/Downloads/P2_cop3530/build/CMakeFiles/edit_cache.dir
+C:/Users/nanek/Downloads/P2_cop3530/build/CMakeFiles/rebuild_cache.dir

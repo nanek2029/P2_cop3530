@@ -7,10 +7,11 @@
             "command": "C:/msys64/ucrt64/bin/g++.exe",
             "args": [
                 "-g",
-                "-std=c++14",
-                "${file}",
+                "-std=c++17",
+                "${workspaceFolder}/src/main.cpp",
+                "${workspaceFolder}/src/SearchAlgorithms.cpp",
                 "-o",
-                "${fileDirname}/main.exe"
+                "${workspaceFolder}/src/main.exe"
             ],
             "group": {
                 "kind": "build",
@@ -25,9 +26,11 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
-                "${file}",
+                "-std=c++17",
+                "${workspaceFolder}/src/main.cpp",
+                "${workspaceFolder}/src/SearchAlgorithms.cpp",
                 "-o",
-                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+                "${workspaceFolder}/src/main.exe"
             ],
             "options": {
                 "cwd": "C:/msys64/ucrt64/bin"

@@ -1,0 +1,14 @@
+[
+{
+  "directory": "C:/Users/nanek/Downloads/P2_cop3530/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -IC:/Users/nanek/Downloads/P2_cop3530 -IC:/Users/nanek/Downloads/P2_cop3530/src -IC:/Users/nanek/Downloads/P2_cop3530/src/bridges -IC:/Users/nanek/Downloads/P2_cop3530/src/bridges/data_src -IC:/Users/nanek/Downloads/P2_cop3530/rapidjson -g -std=gnu++17 -o CMakeFiles\\P2_cop3530.dir\\src\\main.cpp.obj -c C:\\Users\\nanek\\Downloads\\P2_cop3530\\src\\main.cpp",
+  "file": "C:/Users/nanek/Downloads/P2_cop3530/src/main.cpp",
+  "output": "C:/Users/nanek/Downloads/P2_cop3530/build/CMakeFiles/P2_cop3530.dir/src/main.cpp.obj"
+},
+{
+  "directory": "C:/Users/nanek/Downloads/P2_cop3530/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -IC:/Users/nanek/Downloads/P2_cop3530 -IC:/Users/nanek/Downloads/P2_cop3530/src -IC:/Users/nanek/Downloads/P2_cop3530/src/bridges -IC:/Users/nanek/Downloads/P2_cop3530/src/bridges/data_src -IC:/Users/nanek/Downloads/P2_cop3530/rapidjson -g -std=gnu++17 -o CMakeFiles\\P2_cop3530.dir\\src\\SearchAlgorithms.cpp.obj -c C:\\Users\\nanek\\Downloads\\P2_cop3530\\src\\SearchAlgorithms.cpp",
+  "file": "C:/Users/nanek/Downloads/P2_cop3530/src/SearchAlgorithms.cpp",
+  "output": "C:/Users/nanek/Downloads/P2_cop3530/build/CMakeFiles/P2_cop3530.dir/src/SearchAlgorithms.cpp.obj"
+}
+]
