@@ -10,5 +10,5 @@ It takes a while to load because of the big datasets.
 
 
 
-IN PROGRESS: UI, graph visualizations, \& QT instructions
+IN PROGRESS: UI, graph visualizations, \& QT instructions!
 
