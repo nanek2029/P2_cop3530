@@ -1,7 +1,6 @@
 #include "logic.h"
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <QMessagebox>
 using namespace std;
 
