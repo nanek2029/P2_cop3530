@@ -14,6 +14,18 @@ struct GraphData {
     std::unordered_map<std::string, std::string> movieTitles;
     std::unordered_map<std::string, std::vector<std::string>> nameToActorID;
     std::vector<std::vector<int>> graph;
+
+    int getNumVertices() const {
+        return static_cast<int>(graph.size());
+    }
+
+    long long getNumEdges() const {
+        long long count = 0;
+        for (const auto& neighbors : graph) {
+            count += neighbors.size(); // Adds up links in graph
+        }
+        return count / 2; // Div by 2 since each edge is counted twice
+    }
 };
 
 void loadAllData(GraphData& data);

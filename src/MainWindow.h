@@ -8,6 +8,7 @@
 #include <QTextEdit>
 #include <string>
 #include "logic.h"
+#include <QComboBox>
 
 using namespace std;
 
@@ -21,8 +22,8 @@ private slots: // for event functionality
 
 private:
     GraphData data;
-    QLineEdit *actor1;
-    QLineEdit *actor2;
+    QComboBox *actor1;
+    QComboBox *actor2;
     QTextEdit *resultDisplay;
 
     string iconFilepath = ""; // !!!! don't forget to include later
