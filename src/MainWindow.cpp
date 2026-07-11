@@ -1,34 +1,107 @@
 #include "MainWindow.h"
 #include <QVBoxLayout>
 #include <QMessageBox>
+#include <QIcon>
+#include <QFrame>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     // QMessageBox::information(nullptr, "Status", "MainWindow is being built!"); (for future debugging use)
 
-    // Create container/layout for widgets
-    auto *centralWidget = new QWidget(this);
-    auto *layout = new QVBoxLayout(centralWidget);
+    // -*-*- WIDGET CREATION -*-*-
+    // Editable Textbox for actor names
+    actor1 = new QLineEdit(this);
+    actor2 = new QLineEdit(this);
+    actor1->setStyleSheet("border-radius: 10px; background-color: #e9d190; "
+                          "color: #2a2929; font-size: 14px;"
+                          "padding-left: 10px; padding-right: 10px;");
+    actor1->setFixedHeight(40);
+    actor1->setPlaceholderText("Actor 1");
+    actor2->setStyleSheet("border-radius: 10px; background-color: #e9d190; "
+                          "color: #2a2929; font-size: 14px;"
+                          "padding-left: 10px; padding-right: 10px;");
+    actor2->setFixedHeight(40);
+    actor2->setPlaceholderText("Actor 2");
+
+    auto *connectButton = new QPushButton("Connect!", this);
+    connectButton->setFixedHeight(30);
 
     // Textbox for stats
     resultDisplay = new QTextEdit(this);
     resultDisplay->setReadOnly(true);
 
-    // Editable Textbox for actor names
-    actor1 = new QLineEdit(this);
-    actor2 = new QLineEdit(this);
+    auto *title = new QLabel("CINEVERSE");
+    title->setAlignment(Qt::AlignCenter);
+    title->setStyleSheet("color: #2a2929; font-size: 38px;");
+    auto *ampersand = new QLabel("&");
+    ampersand->setAlignment(Qt::AlignCenter);
 
-    auto *searchButton = new QPushButton("Connect!", this);
+    auto *totalVerticesText = new QLabel("TOTAL VERTICES: ");
+    auto *totalEdgesText = new QLabel("TOTAL EDGES: ");
 
-    layout->addWidget(actor1);
-    layout->addWidget(actor2);
-    layout->addWidget(searchButton);
-    layout->addWidget(resultDisplay);
+    auto *topSeparatorBox = new QFrame;
+    topSeparatorBox->setStyleSheet("background-color: #c79e73; border: none;");
+    topSeparatorBox->setFixedHeight(4);
+
+    auto *middleSeparatorBox = new QFrame;
+    middleSeparatorBox->setStyleSheet("background-color: #c79e73; border: none;");
+    middleSeparatorBox->setFixedHeight(4);
+
+
+
+    // -*-*- LAYOUT/STRUCTURAL SETUP -*-*-
+    // Main container
+    auto *centralWidget = new QWidget(this);
+    auto *mainLayout = new QHBoxLayout(centralWidget);\
+
+    // Rightside container
+    auto *rightsideFrame = new QFrame();
+    auto *rightsideLayout = new QVBoxLayout(rightsideFrame);
+    auto *inputLayout = new QHBoxLayout();
+    inputLayout->addWidget(actor1);
+    inputLayout->addWidget(ampersand);
+    inputLayout->addWidget(actor2);
+    inputLayout->addWidget(connectButton);
+    rightsideLayout->addStretch();
+    rightsideLayout->addLayout(inputLayout);
+
+    rightsideFrame->setStyleSheet("background-color: #2a2929; border: none;");
+    inputLayout->setContentsMargins(30, 10, 30, 10);
+
+
+    // Sidebar container
+    auto *sidebarFrame = new QFrame();
+    sidebarFrame->setFixedWidth(250);
+    auto *sidebarLayout = new QVBoxLayout(sidebarFrame);
+
+    sidebarLayout->addWidget(title);
+    sidebarLayout->addWidget(topSeparatorBox);
+    sidebarLayout->addWidget(totalVerticesText);
+    sidebarLayout->addWidget(totalEdgesText);
+    sidebarLayout->addWidget(middleSeparatorBox);
+    sidebarLayout->addStretch();
+    sidebarLayout->addWidget(resultDisplay);
+
+    sidebarFrame->setStyleSheet("background-color: #e9d190; border: none;");
+    sidebarFrame->setFrameStyle(QFrame::NoFrame);
+
+
+
+    // Adding to main layout
+    mainLayout->addWidget(sidebarFrame);
+    mainLayout->addWidget(rightsideFrame, 1);
 
     setCentralWidget(centralWidget);
 
     loadAllData(data); // load BTS graph
 
-    connect(searchButton, &QPushButton::clicked, this, &MainWindow::onConnectClicked);
+    // -*-*- EVENT HANDLING -*-*-
+    connect(connectButton, &QPushButton::clicked, this, &MainWindow::onConnectClicked);
+
+    // Additional (basic) window stats
+    this->setFixedSize(1300, 750);
+    this->setWindowFlags(Qt::MSWindowsFixedSizeDialogHint); // greys out resize button
+    this->setWindowTitle("CINEVERSE");
+    // this->setWindowIcon(QIcon("relative filepath to be added when I find a nice icon"));
 }
 
 void MainWindow::onConnectClicked() {

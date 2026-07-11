@@ -6,7 +6,10 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QTextEdit>
+#include <string>
 #include "logic.h"
+
+using namespace std;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -21,6 +24,8 @@ private:
     QLineEdit *actor1;
     QLineEdit *actor2;
     QTextEdit *resultDisplay;
+
+    string iconFilepath = ""; // !!!! don't forget to include later
 };
 
 
