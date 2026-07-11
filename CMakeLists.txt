@@ -12,7 +12,9 @@ add_executable(P2_cop3530
         src/SearchAlgorithms.cpp
         src/SearchAlgorithms.h
         src/logic.cpp
-        src/logic.h)
+        src/logic.h
+        src/MainWindow.cpp
+        src/MainWindow.h)
 
 target_link_libraries(P2_cop3530 PRIVATE Qt6::Widgets)
 

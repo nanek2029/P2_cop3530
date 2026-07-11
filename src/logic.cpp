@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <QMessagebox>
 using namespace std;
 
 // helper function to get the next field from a line of tsv data
@@ -68,6 +69,8 @@ void loadAllData(GraphData& data) {
 
     if (!names.is_open()) {
         cout << "names file did not open "<< endl;
+        QMessageBox::critical(nullptr, "File Error", "Could not open src/name.basics.tsv");
+        exit(1);
     }
     if (!movies.is_open()) {
         cout << "movies file did not open "<< endl;
