@@ -60,7 +60,7 @@ void MainWindow::renderGraph(const std::vector<int>& path) {
     view->fitInView(scene->itemsBoundingRect(), Qt::KeepAspectRatio); // Ensures graph loads with all nodes visible
 }
 
-void MainWindow::populateDropdown(QComboBox &actor1, QComboBox &actor2) {
+void MainWindow::populateDropdown(QComboBox &actor1, QComboBox &actor2) const {
     QStringList actors;
     for (int i = 1; i <= 9; ++i) {
         std::string id = "nm000000" + std::to_string(i); // look at IDs nm0000001 - nm0000009
@@ -140,7 +140,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
     // Circular Button for finding connection
 
-    auto *connectButton = new QPushButton(this);
+    connectButton = new QPushButton(this);
     connectButton->setStyleSheet("QPushButton {"
                             " border: none;"
                             " background-color: #a74b17;"
@@ -157,7 +157,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     connectButton->setFixedSize(44,44);
 
     // *Blank* Degrees of Separation text
-    auto *degOfSepText = new QLabel("Degrees of Separation");
+    degOfSepText = new QLabel("Degrees of Separation");
     degOfSepText->setAlignment(Qt::AlignLeft);
     degOfSepText->setStyleSheet("font-size: 35px; color: #fffbf6;");
     degOfSepValue = new QLabel("?", this);
@@ -165,72 +165,72 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     degOfSepValue->setStyleSheet("font-size: 42px; font-weight: bold; color: #be874c;");
 
     // CINEVERSE Title text
-    auto *title = new QLabel("CINEVERSE");
+    title = new QLabel("CINEVERSE");
     title->setAlignment(Qt::AlignCenter);
     title->setStyleSheet("color: #2a2929; font-size: 50px; font-weight: bold;");
 
     // "&" between actor inputs
-    auto *ampersand = new QLabel("&");
+    ampersand = new QLabel("&");
     ampersand->setStyleSheet("font-size: 30px; font-weight: bold; color: #be874c;");
     ampersand->setAlignment(Qt::AlignCenter);
 
     // Total Vertices & Edges text/labels
-    auto *totalVerticesText = new QLabel("TOTAL VERTICES: ");
+    totalVerticesText = new QLabel("TOTAL VERTICES: ");
     totalVerticesText->setStyleSheet("color: #2a2929; font-size: 18px; padding-left: 5px;");
-    auto *totalEdgesText = new QLabel("TOTAL EDGES: ");
+    totalEdgesText = new QLabel("TOTAL EDGES: ");
     totalEdgesText->setStyleSheet("color: #2a2929; font-size: 18px; padding-left: 5px;");
 
-    auto *totalVerticesValue = new QLabel(QString::number(data.getNumVertices()));
+    totalVerticesValue = new QLabel(QString::number(data.getNumVertices()));
     totalVerticesValue->setStyleSheet("color: #a74b17; font-size: 18px; padding-right: 5px; font-weight: bold;");
     totalVerticesValue->setAlignment(Qt::AlignRight);
-    auto *totalEdgesValue = new QLabel(QString::number(data.getNumEdges()));
+    totalEdgesValue = new QLabel(QString::number(data.getNumEdges()));
     totalEdgesValue->setStyleSheet("color: #a74b17; font-size: 18px; padding-right: 5px; font-weight: bold;");
     totalEdgesValue->setAlignment(Qt::AlignRight);
 
     // BFS Stats text/labels
-    auto *BFSTitle = new QLabel("BREADTH-FIRST SEARCH");
+    BFSTitle = new QLabel("BREADTH-FIRST SEARCH");
     BFSTitle->setAlignment(Qt::AlignCenter);
     BFSTitle->setStyleSheet("color: #2a2929; font-size: 20px; font-weight: bold;");
 
-    auto *BFSNodesText = new QLabel("NODES VISITED:");
+    BFSNodesText = new QLabel("NODES VISITED:", this);
     BFSNodesText->setStyleSheet("color: #2a2929; font-size: 18px; padding-left: 5px;");
     BFSNodesValue = new QLabel("0", this);
     BFSNodesValue->setStyleSheet("color: #a74b17; font-size: 18px; padding-right: 5px; font-weight: bold;");
     BFSNodesValue->setAlignment(Qt::AlignRight);
 
-    auto *BFSTimeText = new QLabel("TIME TAKEN:");
+    BFSTimeText = new QLabel("TIME TAKEN:", this);
     BFSTimeText->setStyleSheet("color: #2a2929; font-size: 18px; padding-left: 5px;");
     BFSTimeValue = new QLabel("0", this);
     BFSTimeValue->setStyleSheet("color: #a74b17; font-size: 18px; padding-right: 5px; font-weight: bold;");
     BFSTimeValue->setAlignment(Qt::AlignRight);
 
     // Bidirectional BFS Stats text/labels
-    auto *BiBFSTitle = new QLabel("BIDIRECTIONAL BFS");
+    BiBFSTitle = new QLabel("BIDIRECTIONAL BFS", this);
     BiBFSTitle->setAlignment(Qt::AlignCenter);
     BiBFSTitle->setStyleSheet("color: #2a2929; font-size: 20px; font-weight: bold;");
 
-    auto *BiBFSNodesText = new QLabel("NODES VISITED:");
+    BiBFSNodesText = new QLabel("NODES VISITED:", this);
     BiBFSNodesText->setStyleSheet("color: #2a2929; font-size: 18px; padding-left: 5px;");
     BiBFSNodesValue = new QLabel("0", this);
     BiBFSNodesValue->setStyleSheet("color: #a74b17; font-size: 18px; padding-right: 5px; font-weight: bold;");
     BiBFSNodesValue->setAlignment(Qt::AlignRight);
 
-    auto *BiBFSTimeText = new QLabel("TIME TAKEN:");
+    BiBFSTimeText = new QLabel("TIME TAKEN:");
     BiBFSTimeText->setStyleSheet("color: #2a2929; font-size: 18px; padding-left: 5px;");
     BiBFSTimeValue = new QLabel("0", this);
     BiBFSTimeValue->setStyleSheet("color: #a74b17; font-size: 18px; padding-right: 5px; font-weight: bold;");
     BiBFSTimeValue->setAlignment(Qt::AlignRight);
 
     // Extra lines for style
-    auto *topSeparatorBox = new QFrame;
+    topSeparatorBox = new QFrame;
     topSeparatorBox->setStyleSheet("background-color: #c79e73; border: none; margin: 0 10px;");
     topSeparatorBox->setFixedHeight(4);
 
-    auto *middleSeparatorBox = new QFrame;
+    middleSeparatorBox = new QFrame;
     middleSeparatorBox->setStyleSheet("background-color: #c79e73; border: none; margin: 0 40px;");
     middleSeparatorBox->setFixedHeight(4);
 
-    auto *bottomRightSeparatorBox = new QFrame;
+    bottomRightSeparatorBox = new QFrame;
     bottomRightSeparatorBox->setStyleSheet("background-color: #c79e73; border: none;");
     bottomRightSeparatorBox->setFixedHeight(7);
 
@@ -239,16 +239,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
     // -*-*- LAYOUT/STRUCTURAL SETUP -*-*-
     // Main container
-    auto *centralWidget = new QWidget(this);
-    auto *mainLayout = new QHBoxLayout(centralWidget);
+    centralWidget = new QWidget(this);
+    mainLayout = new QHBoxLayout(centralWidget);
 
     // Rightside container (for graph and inputs)
-    auto *rightsideFrame = new QFrame();
-    auto *rightsideLayout = new QVBoxLayout(rightsideFrame);
+    rightsideFrame = new QFrame();
+    rightsideLayout = new QVBoxLayout(rightsideFrame);
 
     // Graph container
-    auto *graphFrame = new QFrame();
-    auto *graphLayout = new QVBoxLayout(graphFrame);
+    graphFrame = new QFrame();
+    graphLayout = new QVBoxLayout(graphFrame);
     graphFrame->setStyleSheet("background-color: #fffbf6; border: none; border-radius: 10px;");
     graphFrame->setMinimumHeight(550);
     graphLayout->setContentsMargins(0,0,0,0);
@@ -268,12 +268,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
+    inputLayout = new QHBoxLayout();
+    degOfSepLayout = new QHBoxLayout();
 
 
     // -*-*- ASSEMBLING LAYOUT -*-*-
-
-    auto *inputLayout = new QHBoxLayout();
-    auto *degOfSepLayout = new QHBoxLayout();
 
     // Inputs horizontal part
     inputLayout->setSpacing(0); // global spacing for horizontal input space
@@ -309,32 +308,32 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     graphLayout->addWidget(view);
 
     // Sidebar container
-    auto *sidebarFrame = new QFrame();
+    sidebarFrame = new QFrame();
     sidebarFrame->setFixedWidth(300);
-    auto *sidebarLayout = new QVBoxLayout(sidebarFrame);
+    sidebarLayout = new QVBoxLayout(sidebarFrame);
 
     // Total Vertices layout
-    auto *verticesLayout = new QHBoxLayout();
+    verticesLayout = new QHBoxLayout();
     verticesLayout->addWidget(totalVerticesText);
     verticesLayout->addWidget(totalVerticesValue);
     // Total Edges layout
-    auto *edgesLayout = new QHBoxLayout();
+    edgesLayout = new QHBoxLayout();
     edgesLayout->addWidget(totalEdgesText);
     edgesLayout->addWidget(totalEdgesValue);
     // BFS Nodes layout
-    auto *BFSNodesLayout = new QHBoxLayout();
+    BFSNodesLayout = new QHBoxLayout();
     BFSNodesLayout->addWidget(BFSNodesText);
     BFSNodesLayout->addWidget(BFSNodesValue);
     // BFS Time layout
-    auto *BFSTimeLayout = new QHBoxLayout();
+    BFSTimeLayout = new QHBoxLayout();
     BFSTimeLayout->addWidget(BFSTimeText);
     BFSTimeLayout->addWidget(BFSTimeValue);
     // BiBFS Nodes layout
-    auto *BiBFSNodesLayout = new QHBoxLayout();
+    BiBFSNodesLayout = new QHBoxLayout();
     BiBFSNodesLayout->addWidget(BiBFSNodesText);
     BiBFSNodesLayout->addWidget(BiBFSNodesValue);
     // BiBFS Time layout
-    auto *BiBFSTimeLayout = new QHBoxLayout();
+    BiBFSTimeLayout = new QHBoxLayout();
     BiBFSTimeLayout->addWidget(BiBFSTimeText);
     BiBFSTimeLayout->addWidget(BiBFSTimeValue);
 

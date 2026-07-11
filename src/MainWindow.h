@@ -5,6 +5,7 @@
 #include <QLineEdit>
 #include <QLabel>
 #include <QTextEdit>
+#include <QPushButton>
 #include <string>
 #include "logic.h"
 #include <QComboBox>
@@ -13,6 +14,7 @@
 #include <QGraphicsEllipseItem> // for nodes
 #include <QGraphicsLineItem> // for edges
 #include <QWheelEvent>
+#include <QHBoxLayout>
 
 using namespace std;
 
@@ -21,7 +23,7 @@ class MainWindow : public QMainWindow {
 public:
     MainWindow(QWidget *parent = nullptr);
     void renderGraph(const std::vector<int>& path);     // For updating graph nodes & connections
-    void populateDropdown(QComboBox &actor1, QComboBox &actor2);    // For including some sample actors into input dropdowns
+    void populateDropdown(QComboBox &actor1, QComboBox &actor2) const;    // For including some sample actors into input dropdowns
 
 private slots: // for event functionality
     void onConnectClicked();    // For checkmark button click (find connections between actors)
@@ -29,20 +31,71 @@ private slots: // for event functionality
 
 private:
     GraphData data;
+
+    // UI widgets
     QComboBox *actor1;
     QComboBox *actor2;
 
+    QPushButton *connectButton;
+
+    QLabel *BFSTitle;
+    QLabel *BFSNodesText;
     QLabel *BFSNodesValue;
+    QLabel *BFSTimeText;
     QLabel *BFSTimeValue;
+
+    QLabel *BiBFSTitle;
+    QLabel *BiBFSNodesText;
     QLabel *BiBFSNodesValue;
+    QLabel *BiBFSTimeText;
     QLabel *BiBFSTimeValue;
 
+    QLabel *degOfSepText;
     QLabel *degOfSepValue;
+
+    QLabel *title;
+    QLabel *ampersand;
+    QFrame *topSeparatorBox;
+    QFrame *middleSeparatorBox;
+    QFrame *bottomRightSeparatorBox;
+
+    QLabel *totalVerticesText;
+    QLabel *totalEdgesText;
+    QLabel *totalVerticesValue;
+    QLabel *totalEdgesValue;
+
 
     QGraphicsScene *scene;
     QGraphicsView *view;
 
-    string iconFilepath = ""; // !!!! don't forget to include later
+    // UI layouts
+
+    QWidget *centralWidget;
+    QHBoxLayout *mainLayout;
+
+    QFrame *rightsideFrame;
+    QVBoxLayout *rightsideLayout;
+
+    QFrame *graphFrame;
+    QVBoxLayout *graphLayout;
+
+    QFrame *sidebarFrame;
+    QVBoxLayout *sidebarLayout;
+
+    QHBoxLayout *verticesLayout;
+    QHBoxLayout *edgesLayout;
+    QHBoxLayout *BFSNodesLayout;
+    QHBoxLayout *BFSTimeLayout;
+    QHBoxLayout *BiBFSNodesLayout;
+    QHBoxLayout *BiBFSTimeLayout;
+
+
+
+
+    // Assembly layouts
+
+    QHBoxLayout *inputLayout;
+    QHBoxLayout *degOfSepLayout;
 };
 
 
