@@ -26,6 +26,11 @@ private:
     QComboBox *actor2;
     QTextEdit *resultDisplay;
 
+    QLabel *BFSNodesValue;
+    QLabel *BFSTimeValue;
+    QLabel *BiBFSNodesValue;
+    QLabel *BiBFSTimeValue;
+
     string iconFilepath = ""; // !!!! don't forget to include later
 };
 
