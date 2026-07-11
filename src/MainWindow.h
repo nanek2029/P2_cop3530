@@ -13,8 +13,8 @@ class MainWindow : public QMainWindow {
 public:
     MainWindow(QWidget *parent = nullptr);
 
-private slots:
-    void onSearchClicked();
+private slots: // for event functionality
+    void onConnectClicked();
 
 private:
     GraphData data;
